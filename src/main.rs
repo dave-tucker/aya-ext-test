@@ -57,7 +57,7 @@ fn try_main() -> Result<(), anyhow::Error> {
     dispatcher.attach(&opt.iface, XdpFlags::default())?;
 
     info!("Loading xdp_pass as extension");
-    let mut bpf = BpfLoader::new().load(include_bytes_aligned!("../bpf/.output/xdp_pass.bpf.o"))?;
+    let mut bpf = BpfLoader::new().extension("pass").load(include_bytes_aligned!("../bpf/.output/xdp_pass.bpf.o"))?;
     let pass: &mut Extension = bpf.program_mut("pass").unwrap().try_into()?;
     pass.load(dispatcher.fd().unwrap(), "prog0")?;
     pass.attach()?;

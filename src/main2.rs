@@ -36,7 +36,7 @@ fn try_main() -> Result<(), anyhow::Error> {
     pass.attach(&opt.iface, XdpFlags::default())?;
 
     info!("Loading xdp_drop as extension");
-    let mut bpf = BpfLoader::new().load(include_bytes_aligned!("../bpf/.output/xdp_drop.bpf.o"))?;
+    let mut bpf = BpfLoader::new().extension("drop").load(include_bytes_aligned!("../bpf/.output/xdp_drop.bpf.o"))?;
     let drop_: &mut Extension = bpf.program_mut("drop").unwrap().try_into()?;
     drop_.load(pass.fd().unwrap(), "xdp_pass")?;
     let mut drop_link = drop_.attach()?;
